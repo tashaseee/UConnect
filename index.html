@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="page-wrapper">
-        <!-- First Block (Own Blue Container with Rounded Corners) -->
+        <!-- Первый блок (синий контейнер) -->
         <div class="first-container">
             <header class="header">
                 <img src="assets/images/UConnect.svg" alt="Logo" class="logo-img">
@@ -27,7 +27,7 @@
                     <h1 class="main-title">UConnect — мессенджер для открытого общения и сотрудничества</h1>
                     <p class="subtitle">Построен на открытом протоколе Matrix. Без рекламы, слежки и навязанных правил.</p>
                     <div class="download-buttons">
-                        <a href="#"><img src="assets/images/download.svg" alt="Get it on Google Play" class="download-img"></a>
+                        <div><img src="assets/images/download.svg" alt="Get it on Google Play" class="download-img"></div>
                     </div>
                 </div>
                 <div class="phone-mockup">
@@ -37,15 +37,15 @@
             </main>
         </div>
 
-        <!-- Features Section (White Background) -->
+        <!-- Секция возможностей -->
         <section class="features-section">
             <div class="features-container">
-                <div class="features-header">
-                    <h2 class="features-title">Что умеет</h2>
-                    <h1 class="features-brand">UConnect</h1>
-                    <p class="features-subtitle">Просто, удобно и безопасно — как для личного общения, так и для работы над проектами</p>
-                </div>
                 <div class="features-grid">
+                    <div class="feature-item empty-item">
+                        <h2 class="features-title">Что умеет</h2>
+                        <h1 class="features-brand">UConnect</h1>
+                        <p class="features-subtitle">Просто, удобно и безопасно — как для личного общения, так и для работы над проектами</p>
+                    </div>
                     <div class="feature-item">
                         <div class="feature-icon"><img src="assets/images/lock.svg" alt="Icon" class="icon"></div>
                         <h3 class="feature-title">Защищённые чаты</h3>
@@ -66,34 +66,39 @@
                         <h3 class="feature-title">Адаптивность</h3>
                         <p class="feature-description">Работает в браузере, на десктопе и на телефоне</p>
                     </div>
-                    <div class="feature-item">
+                    <div class="feature-item active-glow">
                         <div class="feature-icon"><img src="assets/images/clip.svg" alt="Icon" class="icon"></div>
                         <h3 class="feature-title">Файлы и изображения</h3>
                         <p class="feature-description">Делитесь файлами, фото, документами — прямо в чате</p>
                     </div>
                 </div>
-                <svg class="connection-lines">
-                    <!-- Connection lines can be added here if needed -->
+                <svg class="connection-lines" width="100%" height="100%">
+                    <path class="connection-path" d="M 50% 25% Q 65% 20% 75% 30%" />
+                    <path class="connection-path" d="M 25% 75% Q 40% 80% 50% 70%" />
+                    <path class="connection-path" d="M 50% 70% Q 65% 75% 75% 65%" />
+                    <path class="connection-path" d="M 50% 30% Q 35% 35% 25% 75%" />
                 </svg>
             </div>
         </section>
 
-        <!-- Third Block (Own Blue Container with Rounded Corners) -->
+        <!-- Третий блок (синий контейнер) -->
         <div class="third-container">
-            <section class="new-block">
-                <div class="new-text-content">
-                    <p class="new-subtitle">Присоединяйтесь к</p>
-                    <h1 class="new-title">UConnect</h1>
-                    <p class="new-description">Установите приложение и начните обмениваться сообщениями прямо сейчас!</p>
-                    <a href="#"><img src="assets/images/download.svg" alt="Download" class="new-download-img"></a>
+            <section class="join-block">
+                <div class="join-text-content">
+                    <p class="join-subtitle">Присоединяйтесь к</p>
+                    <h1 class="join-title">UConnect</h1>
+                    <p class="join-description">Установите приложение и начните обмениваться сообщениями прямо сейчас!</p>
+                    <div class="download-buttons">
+                        <div><img src="assets/images/download.svg" alt="Download" class="join-download-img"></div>
+                    </div>
                 </div>
-                <div class="new-phone-mockup">
-                    <img src="assets/images/phone3.svg" alt="Phone" class="new-phone-img">
+                <div class="join-phone-mockup">
+                    <img src="assets/images/phone3.svg" alt="Phone" class="join-phone-img">
                 </div>
             </section>
         </div>
-    </div>
-    <!-- Footer -->
+
+        <!-- Футер -->
         <footer class="footer">
             <div class="footer-content">
                 <div class="footer-logo">
