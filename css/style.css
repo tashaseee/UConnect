@@ -255,6 +255,7 @@ body {
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
+    z-index: 1;
 }
 
 .feature-item:hover::before,
@@ -359,7 +360,7 @@ body {
     border-radius: 30px;
     position: relative;
     padding: 0 60px;
-    margin: четы0 25px 20px;
+    margin: 0 25px 20px;
 }
 
 /* Join Block */
@@ -502,18 +503,34 @@ body {
     margin: 0;
 }
 
-/* Responsive Design */
+/* Responsive Design - Tablets (1024px and below) */
 @media (max-width: 1024px) {
     .first-container, .third-container, .features-section {
         width: calc(100% - 30px);
-        margin: 0 15px 20px;
+        margin: 0 auto 20px auto;
         padding: 0 30px;
     }
     
     .footer {
         width: calc(100% - 30px);
-        margin: 30px 15px;
-        padding: 30px 50px;
+        margin: 30px auto;
+        padding: 30px 40px;
+    }
+    
+    .header {
+        padding: 25px 0;
+    }
+    
+    .logo-img {
+        height: 45px;
+    }
+    
+    .nav {
+        gap: 30px;
+    }
+    
+    .nav-link {
+        font-size: 15px;
     }
     
     .main-content {
@@ -525,49 +542,71 @@ body {
     
     .text-content {
         max-width: 100%;
-        margin-right: 0;
-        margin-left: 30px;
+        margin: 0 auto;
     }
     
     .main-title {
-        font-size: 32px;
+        font-size: 36px;
     }
     
     .subtitle {
         font-size: 18px;
+        margin-bottom: 40px;
+    }
+    
+    .download-buttons {
+        justify-content: center;
+        gap: 15px;
+    }
+    
+    .download-img {
+        height: 60px;
     }
     
     .phone-mockup {
-        max-width: 700px;
-        margin-top: 0;
+        max-width: 100%;
         justify-content: center;
     }
     
     .phone-img {
-        max-height: 700px;
-        width: 100%;
-        transform: translateX(0);
+        position: relative;
+        transform: none;
+        width: 60%;
+        max-width: 400px;
+        max-height: 600px;
+        margin: 0 auto;
+        display: block;
     }
     
     .features-section {
-        padding: 40px 20px;
+        padding: 50px 30px;
         margin-bottom: 30px;
-    }
-    
-    .feature-item.empty-item {
-        grid-column: 1 / span 2;
-        text-align: right;
-        align-items: flex-end;
-        padding: 20px 25px;
-    }
-    
-    .feature-item.empty-item .features-brand {
-        font-size: 48px;
     }
     
     .features-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        grid-template-rows: repeat(3, auto);
+        gap: 15px;
+    }
+    
+    .feature-item.empty-item {
+        grid-column: 1 / span 2;
+        grid-row: 1;
+        text-align: center;
+        align-items: center;
+        padding: 30px 25px;
+    }
+    
+    .feature-item.empty-item .features-brand {
+        font-size: 56px;
+    }
+    
+    .feature-item.empty-item .features-title {
+        font-size: 28px;
+    }
+    
+    .feature-item.empty-item .features-subtitle {
+        font-size: 16px;
     }
     
     .feature-item:nth-child(2) {
@@ -591,132 +630,203 @@ body {
     }
     
     .feature-item:nth-child(6) {
-        grid-column: 1;
+        grid-column: 1 / span 2;
         grid-row: 4;
+        max-width: 50%;
+        margin: 0 auto;
+    }
+    
+    .feature-title {
+        font-size: 18px;
+    }
+    
+    .feature-description {
+        font-size: 15px;
     }
 
     .join-block {
         flex-direction: column;
         text-align: center;
-        padding: 40px 0;
+        padding: 50px 0;
     }
 
     .join-text-content {
         max-width: 100%;
-        margin-right: 0;
-        margin-left: 30px;
-        margin-bottom: 20px;
+        margin: 0 auto 30px auto;
+    }
+
+    .join-subtitle {
+        font-size: 22px;
     }
 
     .join-title {
-        font-size: 72px;
+        font-size: 80px;
+    }
+
+    .join-description {
+        font-size: 18px;
+    }
+
+    .join-download-img {
+        height: 60px;
     }
 
     .join-phone-mockup {
-        max-width: 700px;
+        max-width: 100%;
         justify-content: center;
     }
 
     .join-phone-img {
-        max-height: 700px;
-        width: 100%;
+        width: 60%;
+        max-width: 400px;
+        max-height: 600px;
     }
 
     .footer-content {
         flex-direction: column;
         text-align: center;
         gap: 30px;
-    }
-
-    .footer-links {
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    .footer-section {
         align-items: center;
     }
 
     .footer-logo {
         margin-right: 0;
+        text-align: center;
+    }
+
+    .footer-links {
+        flex-direction: row;
+        justify-content: center;
+        gap: 60px;
+    }
+
+    .footer-section {
+        align-items: center;
+        text-align: center;
     }
 }
 
+/* Tablets - Portrait and Small Laptops (768px and below) */
 @media (max-width: 768px) {
     .first-container, .third-container, .features-section {
         width: calc(100% - 20px);
-        margin: 0 10px 20px;
-        padding: 0 20px;
-        border-radius: 20px;
+        margin: 0 auto 20px auto;
+        padding: 0 25px;
+        border-radius: 25px;
     }
     
     .footer {
         width: calc(100% - 20px);
-        margin: 30px 10px;
-        padding: 20px 30px;
+        margin: 30px auto;
+        padding: 25px 35px;
     }
     
     .header {
         flex-direction: column;
         gap: 20px;
+        padding: 30px 0;
     }
     
     .nav {
-        flex-direction: column;
-        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 25px;
+    }
+    
+    .language-selector {
+        font-size: 14px;
+    }
+    
+    .main-content {
+        padding: 30px 0 50px 0;
+        gap: 30px;
+    }
+    
+    .text-content {
+        margin: 0 auto;
     }
     
     .main-title {
-        font-size: 28px;
+        font-size: 32px;
+        margin-bottom: 15px;
     }
     
     .subtitle {
-        font-size: 16px;
+        font-size: 17px;
+        margin-bottom: 35px;
     }
     
-    .phone-mockup {
-        max-width: 550px;
-        margin-top: 0;
-        justify-content: center;
+    .download-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .download-img {
+        height: 55px;
     }
     
     .phone-img {
-        max-height: 550px;
-        width: 100%;
-        transform: translateX(0);
+        width: 70%;
+        max-width: 350px;
+        max-height: 500px;
     }
     
     .features-section {
-        padding: 40px 15px;
+        padding: 40px 5px;
+    }
+    
+    .features-grid {
+        gap: 12px;
+    }
+    
+    .feature-item.empty-item {
+        padding: 25px 20px;
     }
     
     .feature-item.empty-item .features-brand {
-        font-size: 36px;
+        font-size: 48px;
     }
     
     .feature-item.empty-item .features-title {
         font-size: 24px;
     }
     
-    .features-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
+    .feature-item.empty-item .features-subtitle {
+        font-size: 15px;
     }
     
-    .feature-item.empty-item {
-        grid-column: 1;
-        text-align: right;
-        align-items: flex-end;
-        padding: 15px 20px;
+    .feature-item {
+        padding: 18px 12px;
+        border-radius: 25px;
     }
     
-    .feature-item:nth-child(2),
-    .feature-item:nth-child(3),
-    .feature-item:nth-child(4),
-    .feature-item:nth-child(5),
-    .feature-item:nth-child(6) {
-        grid-column: 1;
-        grid-row: auto;
+    .feature-title {
+        font-size: 17px;
+        margin-bottom: 8px;
+    }
+    
+    .feature-description {
+        font-size: 14px;
+    }
+    
+    .feature-icon {
+        width: 42px;
+        height: 42px;
+        margin-bottom: 15px;
+    }
+    
+    .icon {
+        width: 42px;
+        height: 42px;
+    }
+
+    .join-block {
+        padding: 40px 0;
+    }
+
+    .join-text-content {
+        margin: 0 auto 25px auto;
     }
 
     .join-subtitle {
@@ -724,126 +834,30 @@ body {
     }
 
     .join-title {
-        font-size: 48px;
+        font-size: 68px;
+        margin-bottom: 15px;
     }
 
     .join-description {
-        font-size: 16px;
-    }
-
-    .join-text-content {
-        margin-left: 20px;
-        margin-right: 20px;
-    }
-
-    .join-phone-mockup {
-        max-width: 550px;
-    }
-
-    .join-phone-img {
-        max-height: 550px;
-    }
-}
-
-@media (max-width: 480px) {
-    .first-container, .third-container, .features-section {
-        width: calc(100% - 15px);
-        margin: 0 7.5px 20px;
-        padding: 0 15px;
-        border-radius: 15px;
-    }
-    
-    .footer {
-        width: calc(100% - 15px);
-        margin: 30px 7.5px;
-        padding: 15px 20px;
-    }
-    
-    .main-title {
-        font-size: 24px;
-    }
-    
-    .subtitle {
-        font-size: 14px;
-    }
-    
-    .download-img {
-        height: 50px;
-    }
-    
-    .phone-mockup {
-        max-width: 400px;
-        margin-top: 0;
-        justify-content: center;
-    }
-    
-    .phone-img {
-        max-height: 400px;
-        width: 100%;
-        transform: translateX(0);
-    }
-    
-    .features-section {
-        padding: 30px 10px;
-        margin-bottom: 20px;
-    }
-    
-    .feature-item.empty-item .features-brand {
-        font-size: 28px;
-    }
-    
-    .feature-item.empty-item .features-title {
-        font-size: 18px;
-    }
-    
-    .feature-item.empty-item .features-subtitle {
-        font-size: 14px;
-    }
-    
-    .feature-item {
-        padding: 15px 10px;
-    }
-
-    .feature-item.empty-item {
-        padding: 15px 20px;
-        text-align: right;
-        align-items: flex-end;
-    }
-
-    .join-subtitle {
-        font-size: 18px;
-    }
-
-    .join-title {
-        font-size: 36px;
-    }
-
-    .join-description {
-        font-size: 14px;
+        font-size: 17px;
+        margin-bottom: 35px;
     }
 
     .join-download-img {
-        height: 50px;
-    }
-
-    .join-text-content {
-        margin-left: 15px;
-        margin-right: 15px;
-    }
-
-    .join-phone-mockup {
-        max-width: 400px;
+        height: 55px;
     }
 
     .join-phone-img {
-        max-height: 400px;
+        width: 70%;
+        max-width: 350px;
+        max-height: 500px;
+    }
+
+    .footer-links {
+        gap: 40px;
     }
 
     .footer-logo-img {
-        height: 40px;
-    }
-
-    .footer-link-medium, .footer-text, .footer-copyright {
-        font-size: 14px;
+        height: 50px;
     }
 }
