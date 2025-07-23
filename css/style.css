@@ -191,6 +191,10 @@ body {
     border: 2.5px solid rgba(27, 50, 184, 0.1);
     overflow: hidden;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    --glow-size: 80px;
+    --glow-opacity: 0;
+    --mouse-x: 50%;
+    --mouse-y: 50%;
 }
 
 .feature-item.empty-item {
@@ -235,37 +239,60 @@ body {
 .feature-item::before {
     content: '';
     position: absolute;
-    inset: -1px;
-    border-radius: 20px;
-    padding: 2px;
-    background: conic-gradient(
-        from var(--angle, 0deg),
-        transparent 0deg,
-        transparent calc(var(--angle, 0deg) - 60deg),
-        #1B32B8 calc(var(--angle, 0deg) - 20deg),
-        #4A90E2 var(--angle, 0deg),
-        #1B32B8 calc(var(--angle, 0deg) + 20deg),
-        transparent calc(var(--angle, 0deg) + 60deg),
-        transparent 360deg
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 30px;
+    background: radial-gradient(
+        var(--glow-size) var(--glow-size) at var(--mouse-x) var(--mouse-y),
+        rgba(27, 50, 184, 0.8) 0%,
+        rgba(27, 50, 184, 0.4) 50%,
+        transparent 70%
     );
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    opacity: var(--glow-opacity);
+    transition: opacity 0.2s ease;
     pointer-events: none;
     z-index: 1;
+    padding: 2px;
+}
+
+/* Резервный стиль для браузеров, не поддерживающих mask-composite */
+@supports not ((-webkit-mask-composite: xor) or (mask-composite: exclude)) {
+    .feature-item::before {
+        background: radial-gradient(
+            var(--glow-size) var(--glow-size) at var(--mouse-x) var(--mouse-y),
+            rgba(27, 50, 184, 0.6) 0%,
+            transparent 70%
+        );
+        border: 2px solid rgba(27, 50, 184, 0.4);
+        -webkit-mask: none;
+        mask: none;
+    }
 }
 
 .feature-item:hover::before,
 .feature-item.active-glow::before {
-    opacity: 1;
+    --glow-opacity: 1;
+}
+
+.feature-item.active-glow::before {
+    animation: pulse 2s infinite;
 }
 
 .feature-item:hover {
-    transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(27, 50, 184, 0.15);
+}
+
+@keyframes pulse {
+    0% { --glow-size: 80px; }
+    50% { --glow-size: 100px; }
+    100% { --glow-size: 80px; }
 }
 
 .feature-icon {
@@ -464,7 +491,7 @@ body {
 }
 
 .footer-link-medium {
-    font-weight: 500; /* Made bolder for "Служба поддержки" and "Условия и политика" */
+    font-weight: 500;
     font-size: 16px;
     color: #212121;
     text-decoration: none;
@@ -537,7 +564,7 @@ body {
         flex-direction: column;
         text-align: center;
         gap: 40px;
-        padding: 40px 0 60px 0;
+        padding: 40px 0 80px 0;
     }
     
     .text-content {
@@ -564,17 +591,23 @@ body {
     }
     
     .phone-mockup {
+        flex: none;
         max-width: 100%;
         justify-content: center;
+        position: relative;
+        height: 300px;
+        overflow: hidden;
     }
     
     .phone-img {
-        position: relative;
-        transform: none;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
         width: 60%;
-        max-width: 400px;
-        max-height: 600px;
-        margin: 0 auto;
+        max-width: 350px;
+        max-height: 500px;
+        margin: 0;
         display: block;
     }
     
@@ -766,10 +799,21 @@ body {
         height: 55px;
     }
     
+    .phone-mockup {
+        flex: none;
+        max-height: 200px;
+        overflow: hidden;
+    }
+    
     .phone-img {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
         width: 70%;
         max-width: 350px;
         max-height: 500px;
+        margin: 0;
     }
     
     .features-section {

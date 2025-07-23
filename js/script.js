@@ -1,36 +1,168 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Инициализация приложения
     initializeApp();
-    setupEventListeners();
+    
+    // Настройка эффекта свечения границы
+    setupLocalBorderGlow();
+    
+    // Запуск анимации телефонов
     startPhoneAnimation();
-    setupFeatureBorderGlow();
+    
+    // Настройка обработчиков событий
+    setupEventListeners();
 });
 
+/**
+ * Основная функция инициализации приложения
+ */
 function initializeApp() {
-    console.log('UConnect загружен');
-}
-
-function setupEventListeners() {
-    window.addEventListener('scroll', debounce(handleScroll, 10));
-    window.addEventListener('resize', handleResize);
-}
-
-// Анимация телефонов
-function startPhoneAnimation() {
-    const phoneImages = document.querySelectorAll('.phone-img');
-    let currentIndex = 0;
+    console.log('UConnect initialized');
     
-    if (phoneImages.length > 0) {
-        phoneImages[0].classList.add('active');
-        
-        setInterval(() => {
-            phoneImages[currentIndex].classList.remove('active');
-            currentIndex = (currentIndex + 1) % phoneImages.length;
-            phoneImages[currentIndex].classList.add('active');
-        }, 5000);
+    // Проверка поддержки CSS-переменных
+    if (!CSS.supports('(--a: 0)')) {
+        console.warn('CSS variables not supported, some effects may not work');
     }
 }
 
-// Обработчик скролла для хедера
+/**
+ * Настройка локального свечения границы при наведении
+ */
+function setupLocalBorderGlow() {
+    const featureItems = document.querySelectorAll('.feature-item:not(.empty-item)');
+    
+    featureItems.forEach(item => {
+        // Отладка: проверяем, обрабатывается ли элемент
+        console.log('Processing feature item:', item);
+
+        // Функция обновления позиции свечения
+        const updateGlowPosition = (e) => {
+            const rect = item.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Устанавливаем позицию свечения
+            item.style.setProperty('--mouse-x', `${x}px`);
+            item.style.setProperty('--mouse-y', `${y}px`);
+            
+            // Динамический расчет размера свечения
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const distance = Math.sqrt(
+                Math.pow(x - centerX, 2) + 
+                Math.pow(y - centerY, 2)
+            );
+            
+            // Плавное изменение размера в зависимости от положения курсора
+            const dynamicSize = Math.min(100, 60 + distance * 0.2);
+            item.style.setProperty('--glow-size', `${dynamicSize}px`);
+        };
+
+        // Обработчики событий мыши
+        item.addEventListener('mousemove', (e) => {
+            updateGlowPosition(e);
+            item.style.setProperty('--glow-opacity', '1');
+        });
+
+        item.addEventListener('mouseenter', (e) => {
+            updateGlowPosition(e);
+            item.style.setProperty('--glow-opacity', '1');
+            item.style.boxShadow = '0 10px 30px rgba(27, 50, 184, 0.2)';
+        });
+
+        item.addEventListener('mouseleave', () => {
+            item.style.setProperty('--glow-opacity', '0');
+            item.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.05)';
+        });
+
+        // Для активного элемента (active-glow)
+        if (item.classList.contains('active-glow')) {
+            console.log('Active glow detected on:', item); // Отладка
+            const rect = item.getBoundingClientRect();
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            // Анимация пульсации для активного элемента
+            let pulseDirection = 1;
+            const pulseAnimation = () => {
+                const currentSize = parseInt(item.style.getPropertyValue('--glow-size') || 80);
+                const newSize = currentSize + (pulseDirection * 0.5);
+                
+                if (newSize > 100) pulseDirection = -1;
+                if (newSize < 80) pulseDirection = 1;
+                
+                item.style.setProperty('--glow-size', `${newSize}px`);
+                item.style.setProperty('--mouse-x', `${centerX}px`);
+                item.style.setProperty('--mouse-y', `${centerY}px`);
+                
+                requestAnimationFrame(pulseAnimation);
+            };
+            
+            // Начальные значения
+            item.style.setProperty('--mouse-x', `${centerX}px`);
+            item.style.setProperty('--mouse-y', `${centerY}px`);
+            item.style.setProperty('--glow-opacity', '1');
+            item.style.setProperty('--glow-size', '80px');
+            
+            // Запуск анимации
+            pulseAnimation();
+        }
+    });
+}
+
+/**
+ * Анимация переключения изображений телефонов
+ */
+function startPhoneAnimation() {
+    const phoneImages = document.querySelectorAll('.phone-img');
+    let currentIndex = 0;
+    let animationInterval;
+    
+    if (phoneImages.length > 0) {
+        // Показываем первое изображение
+        phoneImages[0].classList.add('active');
+        
+        // Запускаем интервал переключения
+        animationInterval = setInterval(() => {
+            phoneImages[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % phoneImages.length;
+            phoneImages[currentIndex].classList.add('active');
+        }, 3000);
+    }
+    
+    // Остановка анимации при скрытии страницы
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            clearInterval(animationInterval);
+        } else {
+            animationInterval = setInterval(() => {
+                phoneImages[currentIndex].classList.remove('active');
+                currentIndex = (currentIndex + 1) % phoneImages.length;
+                phoneImages[currentIndex].classList.add('active');
+            }, 3000);
+        }
+    });
+}
+
+/**
+ * Настройка обработчиков событий
+ */
+function setupEventListeners() {
+    // Обработчик скролла для хедера
+    window.addEventListener('scroll', debounce(handleScroll, 15));
+    
+    // Обработчик изменения размера окна
+    window.addEventListener('resize', debounce(handleResize, 200));
+    
+    // Клик по языковому селектору
+    const languageSelector = document.querySelector('.language-selector');
+    if (languageSelector) {
+        languageSelector.addEventListener('click', toggleLanguageDropdown);
+    }
+}
+
+/**
+ * Обработчик скролла - изменение стиля хедера
+ */
 function handleScroll() {
     const header = document.querySelector('.header');
     if (!header) return;
@@ -39,71 +171,95 @@ function handleScroll() {
     if (scrollY > 50) {
         header.style.background = 'rgba(39, 64, 205, 0.95)';
         header.style.backdropFilter = 'blur(10px)';
+        header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
     } else {
         header.style.background = 'transparent';
         header.style.backdropFilter = 'none';
+        header.style.boxShadow = 'none';
     }
 }
 
-// Обработчик изменения размера окна
+/**
+ * Обработчик изменения размера окна
+ */
 function handleResize() {
+    // Проверяем мобильное устройство
     const isMobile = window.innerWidth < 768;
     document.body.classList.toggle('mobile', isMobile);
 }
 
-// Утилита для debounce
-function debounce(func, wait) {
+/**
+ * Переключение языкового меню
+ */
+function toggleLanguageDropdown() {
+    const dropdown = document.querySelector('.language-dropdown');
+    if (!dropdown) {
+        createLanguageDropdown();
+        return;
+    }
+    
+    dropdown.classList.toggle('visible');
+}
+
+/**
+ * Создание выпадающего меню языков
+ */
+function createLanguageDropdown() {
+    const dropdown = document.createElement('div');
+    dropdown.className = 'language-dropdown';
+    dropdown.innerHTML = `
+        <div class="language-option">Русский</div>
+        <div class="language-option">English</div>
+        <div class="language-option">Қазақша</div>
+    `;
+    
+    document.querySelector('.language-selector').appendChild(dropdown);
+}
+
+/**
+ * Функция для устранения дребезга (debounce)
+ */
+function debounce(func, wait, immediate = false) {
     let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
+    return function() {
+        const context = this, args = arguments;
+        const later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
         };
+        const callNow = immediate && !timeout;
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
     };
 }
 
-// Главная функция для подсветки границы, следующей за курсором
-function setupFeatureBorderGlow() {
-    const featureItems = document.querySelectorAll('.feature-item:not(.empty-item)');
-
-    featureItems.forEach(item => {
-        // Инициализируем начальный угол
-        item.style.setProperty('--angle', '0deg');
-        
-        // Функция для обновления угла свечения на основе позиции курсора
-        function updateGlowAngle(event) {
-            const rect = item.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            
-            // Вычисляем угол от центра элемента к курсору
-            const deltaX = event.clientX - centerX;
-            const deltaY = event.clientY - centerY;
-            
-            // Конвертируем в угол в градусах (0-360)
-            let angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
-            angle = angle < 0 ? angle + 360 : angle;
-            
-            // Устанавливаем CSS переменную для угла
-            item.style.setProperty('--angle', `${angle}deg`);
+/**
+ * Проверка поддержки CSS-свойств
+ */
+function checkCssSupport() {
+    const supports = (property, value) => {
+        if (typeof CSS !== 'undefined' && CSS.supports) {
+            return CSS.supports(property, value);
         }
+        return false;
+    };
+    
+    const features = {
+        cssVariables: supports('(--test: 0)'),
+        backdropFilter: supports('backdrop-filter', 'blur(10px)'),
+        maskComposite: supports('-webkit-mask-composite', 'xor')
+    };
+    
+    return features;
+}
 
-        // Обработчик входа курсора
-        item.addEventListener('mouseenter', (event) => {
-            updateGlowAngle(event);
-        });
-
-        // Обработчик движения курсора
-        item.addEventListener('mousemove', (event) => {
-            updateGlowAngle(event);
-        });
-
-        // Обработчик выхода курсора
-        item.addEventListener('mouseleave', () => {
-            // Сбрасываем угол к начальному значению
-            item.style.setProperty('--angle', '0deg');
-        });
-    });
+// Экспорт функций для тестирования
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        initializeApp,
+        setupLocalBorderGlow,
+        startPhoneAnimation,
+        debounce
+    };
 }
