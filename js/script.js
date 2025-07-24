@@ -31,16 +31,21 @@ function setupLocalBorderGlow() {
     const featureItems = document.querySelectorAll('.feature-item:not(.empty-item)');
     
     featureItems.forEach(item => {
-        // Отладка: проверяем, обрабатывается ли элемент
-        console.log('Processing feature item:', item);
-
         // Функция обновления позиции свечения
         const updateGlowPosition = (e) => {
             const rect = item.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+            let x, y;
             
-            // Устанавливаем позицию свечения
+            if (e && e.clientX && e.clientY) {
+                // Для событий мыши
+                x = e.clientX - rect.left;
+                y = e.clientY - rect.top;
+            } else {
+                // Для активного элемента (центрируем свечение)
+                x = rect.width / 2;
+                y = rect.height / 2;
+            }
+            
             item.style.setProperty('--mouse-x', `${x}px`);
             item.style.setProperty('--mouse-y', `${y}px`);
             
@@ -66,20 +71,18 @@ function setupLocalBorderGlow() {
         item.addEventListener('mouseenter', (e) => {
             updateGlowPosition(e);
             item.style.setProperty('--glow-opacity', '1');
-            item.style.boxShadow = '0 10px 30px rgba(27, 50, 184, 0.2)';
         });
 
         item.addEventListener('mouseleave', () => {
             item.style.setProperty('--glow-opacity', '0');
-            item.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.05)';
         });
 
         // Для активного элемента (active-glow)
         if (item.classList.contains('active-glow')) {
-            console.log('Active glow detected on:', item); // Отладка
-            const rect = item.getBoundingClientRect();
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
+            // Начальные значения
+            updateGlowPosition();
+            item.style.setProperty('--glow-opacity', '1');
+            item.style.setProperty('--glow-size', '80px');
             
             // Анимация пульсации для активного элемента
             let pulseDirection = 1;
@@ -91,17 +94,9 @@ function setupLocalBorderGlow() {
                 if (newSize < 80) pulseDirection = 1;
                 
                 item.style.setProperty('--glow-size', `${newSize}px`);
-                item.style.setProperty('--mouse-x', `${centerX}px`);
-                item.style.setProperty('--mouse-y', `${centerY}px`);
                 
                 requestAnimationFrame(pulseAnimation);
             };
-            
-            // Начальные значения
-            item.style.setProperty('--mouse-x', `${centerX}px`);
-            item.style.setProperty('--mouse-y', `${centerY}px`);
-            item.style.setProperty('--glow-opacity', '1');
-            item.style.setProperty('--glow-size', '80px');
             
             // Запуск анимации
             pulseAnimation();

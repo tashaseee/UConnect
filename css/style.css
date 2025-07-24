@@ -190,7 +190,6 @@ body {
     cursor: pointer;
     border: 2.5px solid rgba(27, 50, 184, 0.1);
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     --glow-size: 80px;
     --glow-opacity: 0;
     --mouse-x: 50%;
@@ -207,7 +206,6 @@ body {
     text-align: right;
     background: transparent;
     border: none;
-    box-shadow: none;
     padding: 20px 30px;
 }
 
@@ -246,8 +244,8 @@ body {
     border-radius: 30px;
     background: radial-gradient(
         var(--glow-size) var(--glow-size) at var(--mouse-x) var(--mouse-y),
-        rgba(27, 50, 184, 0.8) 0%,
-        rgba(27, 50, 184, 0.4) 50%,
+        rgba(0, 102, 255, 0.9) 0%, /* Changed to a brighter blue */
+        rgba(0, 102, 255, 0.5) 50%,
         transparent 70%
     );
     -webkit-mask: 
@@ -267,10 +265,10 @@ body {
     .feature-item::before {
         background: radial-gradient(
             var(--glow-size) var(--glow-size) at var(--mouse-x) var(--mouse-y),
-            rgba(27, 50, 184, 0.6) 0%,
+            rgba(0, 102, 255, 0.7) 0%,
             transparent 70%
         );
-        border: 2px solid rgba(27, 50, 184, 0.4);
+        border: 2px solid rgba(0, 102, 255, 0.5);
         -webkit-mask: none;
         mask: none;
     }
@@ -278,15 +276,11 @@ body {
 
 .feature-item:hover::before,
 .feature-item.active-glow::before {
-    --glow-opacity: 1;
+    --glow-opacity: 2; /* Increased opacity for more intense glow */
 }
 
 .feature-item.active-glow::before {
     animation: pulse 2s infinite;
-}
-
-.feature-item:hover {
-    box-shadow: 0 8px 25px rgba(27, 50, 184, 0.15);
 }
 
 @keyframes pulse {
