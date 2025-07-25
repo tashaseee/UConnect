@@ -801,6 +801,9 @@ body {
         margin-bottom: 15px;
     }
     
+    .feature-block {
+      padding-top: 40px;
+    }
     .subtitle {
         font-size: 17px;
         margin-bottom: 35px;
@@ -817,9 +820,7 @@ body {
     }
     
     .phone-img {
-        width: 70%;
-        max-width: 350px;
-        max-height: 500px;
+        display: none;
     }
     
     .features-grid {
