@@ -33,7 +33,7 @@ body {
     border-radius: 30px;
     position: relative;
     padding: 0 60px;
-    margin: 0 25px 20px;
+    margin: 25px 25px 20px;
 }
 
 /* Header */
@@ -157,18 +157,33 @@ body {
 
 /* Features Section */
 .features-section {
-    width: calc(100% - 50px);
-    max-width: 1400px;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
     background-color: #ffffff;
-    padding: 60px 40px;
-    margin: 0 25px 40px;
+    padding: 60px 0;
+    margin: 0 0 40px;
+}
+
+.features-background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    opacity: 0.15;
 }
 
 .features-container {
-    width: 100%;
-    max-width: 1550px;
-    max-height: 800px;
     position: relative;
+    z-index: 2;
+    width: calc(100% - 100px);
+    max-width: 1400px;
+    max-height: 800px;
+    margin: 0 auto;
 }
 
 .features-grid {
@@ -180,21 +195,8 @@ body {
     z-index: 10;
 }
 
-.feature-item {
-    background: #ffffff;
-    border-radius: 30px;
-    padding: 20px 15px;
-    text-align: center;
-    position: relative;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    border: 2.5px solid rgba(27, 50, 184, 0.1);
-    overflow: hidden;
-    --glow-size: 80px;
-    --glow-opacity: 0;
-    --mouse-x: 50%;
-    --mouse-y: 50%;
-}
+
+
 
 .feature-item.empty-item {
     visibility: visible;
@@ -206,6 +208,7 @@ body {
     text-align: right;
     background: transparent;
     border: none;
+    box-shadow: none;
     padding: 20px 30px;
 }
 
@@ -241,12 +244,12 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    border-radius: 30px;
+    border-radius: 26px; /* Уменьшен на 4px для компенсации увеличенного бордера */
     background: radial-gradient(
         var(--glow-size) var(--glow-size) at var(--mouse-x) var(--mouse-y),
-        rgba(0, 102, 255, 0.9) 0%, /* Changed to a brighter blue */
-        rgba(0, 102, 255, 0.5) 50%,
-        transparent 70%
+        rgba(27, 50, 184, 0.95) 0%,
+        rgba(74, 144, 226, 0.9) 50%,
+        transparent 80%
     );
     -webkit-mask: 
         linear-gradient(#fff 0 0) content-box, 
@@ -254,60 +257,79 @@ body {
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     opacity: var(--glow-opacity);
-    transition: opacity 0.2s ease;
+    transition: all 0.3s ease; /* Добавлен transition для плавности */
     pointer-events: none;
     z-index: 1;
-    padding: 2px;
+    padding: 4px; /* Увеличен с 2px до 4px */
+    filter: brightness(1.2) contrast(1.2); /* Увеличенная контрастность */
 }
 
-/* Резервный стиль для браузеров, не поддерживающих mask-composite */
-@supports not ((-webkit-mask-composite: xor) or (mask-composite: exclude)) {
-    .feature-item::before {
-        background: radial-gradient(
-            var(--glow-size) var(--glow-size) at var(--mouse-x) var(--mouse-y),
-            rgba(0, 102, 255, 0.7) 0%,
-            transparent 70%
-        );
-        border: 2px solid rgba(0, 102, 255, 0.5);
-        -webkit-mask: none;
-        mask: none;
-    }
-}
 
 .feature-item:hover::before,
 .feature-item.active-glow::before {
-    --glow-opacity: 2; /* Increased opacity for more intense glow */
+    --glow-opacity: 1;
+    --glow-size: 180px;
+    
 }
 
-.feature-item.active-glow::before {
-    animation: pulse 2s infinite;
+
+@keyframes glow-pulse {
+    0% { 
+        opacity: 0.8;
+        --glow-size: 150px;
+    }
+    50% { 
+        opacity: 1;
+        --glow-size: 180px;
+    }
+    100% { 
+        opacity: 0.8;
+        --glow-size: 150px;
+    }
 }
 
-@keyframes pulse {
-    0% { --glow-size: 80px; }
-    50% { --glow-size: 100px; }
-    100% { --glow-size: 80px; }
+
+
+.feature-item {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 30px;
+    padding: 70px 50px 30px 30px;
+    max-width: 500px;
+    max-height: 200px;
+    text-align: center;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2.5px solid rgba(27, 50, 184, 0.1);
+    overflow: hidden;
+    --glow-size: 80px;
+    --glow-opacity: 0;
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+}
+
+.feature-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding-bottom: 30px;
+    text-align: center;
 }
 
 .feature-icon {
-    margin-bottom: 20px;
-    position: relative;
-    z-index: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 48px;
-    height: 48px;
-    margin: 0 auto 20px auto;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 15px;
 }
-
 .icon {
     width: 48px;
     height: 48px;
 }
 
 .feature-title {
-    font-weight: 500;
+    font-weight: 300;
     font-size: 20px;
     color: #000000;
     position: relative;
@@ -321,6 +343,7 @@ body {
     color: #666666;
     line-height: 1.5;
     position: relative;
+    margin-bottom: 10px;
     z-index: 1;
 }
 
@@ -374,15 +397,7 @@ body {
 }
 
 /* Third Container */
-.third-container {
-    width: calc(100% - 50px);
-    max-width: 1400px;
-    background: #2740CD;
-    border-radius: 30px;
-    position: relative;
-    padding: 0 60px;
-    margin: 0 25px 20px;
-}
+
 
 /* Join Block */
 .join-block {
@@ -446,10 +461,11 @@ body {
     width: calc(100% - 50px);
     max-width: 1400px;
     padding: 40px 60px;
-    background-color: #ffffff;
+    background-color: #2740CD;
     display: flex;
     flex-direction: column;
     align-items: center;
+    border-radius: 30px;
     margin: 30px 25px;
 }
 
@@ -487,7 +503,7 @@ body {
 .footer-link-medium {
     font-weight: 500;
     font-size: 16px;
-    color: #212121;
+    color: #ffffff;
     text-decoration: none;
     transition: opacity 0.3s ease;
 }
@@ -499,7 +515,7 @@ body {
 .footer-text {
     font-weight: 300;
     font-size: 16px;
-    color: #212121;
+    color: #ffffff;
     text-decoration: none;
     margin: 0;
     transition: opacity 0.3s ease;
@@ -520,16 +536,25 @@ body {
 .footer-copyright {
     font-weight: 300;
     font-size: 16px;
-    color: #9B9E9F;
+    color: #ffffff;
     margin: 0;
 }
 
 /* Responsive Design - Tablets (1024px and below) */
 @media (max-width: 1024px) {
-    .first-container, .third-container, .features-section {
+    .first-container{
         width: calc(100% - 30px);
-        margin: 0 auto 20px auto;
+        margin: 25px auto 20px;
         padding: 0 30px;
+    }
+    
+    .features-section {
+        padding: 50px 0;
+        margin-bottom: 30px;
+    }
+    
+    .features-container {
+        width: calc(100% - 60px);
     }
     
     .footer {
@@ -558,7 +583,7 @@ body {
         flex-direction: column;
         text-align: center;
         gap: 40px;
-        padding: 40px 0 80px 0;
+        padding: 40px 0 60px 0;
     }
     
     .text-content {
@@ -585,29 +610,18 @@ body {
     }
     
     .phone-mockup {
-        flex: none;
         max-width: 100%;
         justify-content: center;
-        position: relative;
-        height: 300px;
-        overflow: hidden;
     }
     
     .phone-img {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
+        position: relative;
+        transform: none;
         width: 60%;
-        max-width: 350px;
-        max-height: 500px;
-        margin: 0;
+        max-width: 400px;
+        max-height: 600px;
+        margin: 0 auto;
         display: block;
-    }
-    
-    .features-section {
-        padding: 50px 30px;
-        margin-bottom: 30px;
     }
     
     .features-grid {
@@ -735,11 +749,20 @@ body {
 
 /* Tablets - Portrait and Small Laptops (768px and below) */
 @media (max-width: 768px) {
-    .first-container, .third-container, .features-section {
+    .first-container{
         width: calc(100% - 20px);
-        margin: 0 auto 20px auto;
+        margin: 15px auto 20px;
         padding: 0 25px;
         border-radius: 25px;
+    }
+    
+    .features-section {
+        padding: 40px 0;
+        margin-bottom: 30px;
+    }
+    
+    .features-container {
+        width: calc(100% - 40px);
     }
     
     .footer {
@@ -793,25 +816,10 @@ body {
         height: 55px;
     }
     
-    .phone-mockup {
-        flex: none;
-        max-height: 200px;
-        overflow: hidden;
-    }
-    
     .phone-img {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
         width: 70%;
         max-width: 350px;
         max-height: 500px;
-        margin: 0;
-    }
-    
-    .features-section {
-        padding: 40px 5px;
     }
     
     .features-grid {
